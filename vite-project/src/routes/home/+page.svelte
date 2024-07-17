@@ -2,6 +2,7 @@
     import { Button } from "$lib/components/ui/button";
     import { Input } from "$lib/components/ui/input";
     import Wretch from "wretch";
+    import { toasts, ToastContainer, FlatToast }  from "svelte-toasts";
 
     let email: string;
     let password: string;
@@ -12,11 +13,19 @@
         console.log(password);
         console.log(passwordConfirm);
         await Wretch("/api/user/signup")
-            .json({
+            // .json({
+                
+            // })
+            .post({
                 email,
                 password,
+                passwordConfirm
             })
-            .post();
+            .unauthorized(async (e) =>{
+                // toasts.error(JSON.parse(e.message).message)     
+                console.log(JSON.parse(e.message).message)         
+            })
+            
     };
 </script>
 
