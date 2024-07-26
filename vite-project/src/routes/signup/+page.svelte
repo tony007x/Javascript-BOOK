@@ -2,31 +2,51 @@
     import { Button } from "$lib/components/ui/button";
     import { Input } from "$lib/components/ui/input";
     import Wretch from "wretch";
-    import { toasts, ToastContainer, FlatToast }  from "svelte-toasts";
+    import { toast } from "svelte-sonner";
 
+    let username: string;
     let email: string;
     let password: string;
     let passwordConfirm: string;
+    let error :string;
 
     const login = async () => {
-        console.log(email);
-        console.log(password);
-        console.log(passwordConfirm);
+
+        
         await Wretch("/api/user/signup")
-            // .json({
-                
-            // })
-            .post({
+            .json({
+                username,
                 email,
                 password,
-                passwordConfirm
+                passwordConfirm,
             })
-            .unauthorized(async (e) =>{
-                // toasts.error(JSON.parse(e.message).message)     
-                console.log(JSON.parse(e.message).message)         
+            .headers({
+                email: email,
+                username: username
             })
-            
+            .post({
+                username,
+                email,
+                password,
+                passwordConfirm,
+            })
+            .badRequest(async(e)=>{
+                error = JSON.parse(e.message).message;
+                toast.error(JSON.parse(e.message).message);
+            })
+            .unauthorized(async(e)=>{
+                console.log(e.message);
+                error = JSON.parse(e.message).message;
+                toast.error(JSON.parse(e.message).message);
+            })
+            .res(async (e)=>{
+                console.log(Array.from(e.headers.entries()))
+                window.location.pathname = '/login'
+            });
+        
     };
+
+    
 </script>
 
 <div
@@ -37,14 +57,26 @@
         <div class="flex justify-center">
             <h1 class="text-[36px] font-semibold">Sign Up</h1>
         </div>
-
+        <!-- Error respone -->
+        <div class="w-full border border-[red] ">
+            <p>{error}</p>
+        </div>
         <div class="grid gap-5 mt-5 mb-5">
+            Username
+            <Input
+                type="text"
+                bind:value={username}
+                placeholder="Username"
+                id="username"
+            />
             Email
             <Input
                 type="email"
                 bind:value={email}
                 placeholder="Email"
                 id="email"
+                required
+                pattern=".+@example\.com"
             />
             Password
             <Input
