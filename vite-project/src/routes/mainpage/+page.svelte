@@ -10,6 +10,7 @@
     import { AspectRatio } from "$lib/components/ui/aspect-ratio/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
 
+
     let Email: String;
     let message: any;
     let submit = false;
@@ -33,13 +34,13 @@
 </script>
 
 <Nav></Nav>
+
 <div class="flex w-full h-screen mt-[100px] justify-center items-center">
     <div class="flex w-screen h-[700px] border border-[red]">
         <div class="flex w-full border border-[blue] m-3">
 
         </div>
         <div class="flex w-1/3 border border-[green] m-3">
-            <img src="https://github.com/tony007x/Javascript-BOOK/blob/main/IMG_0373.JPG" alt="">
         </div>
     </div>
 </div>
@@ -47,3 +48,5 @@
 <div class="flex w-full h-[400px] bg-black">
     helloWolrd
 </div>
+<img src="https://github.com/tony007x/Javascript-BOOK/blob/main/IMG_0373.JPG?raw=true" alt="ME">
+
