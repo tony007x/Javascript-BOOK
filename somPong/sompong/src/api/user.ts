@@ -10,7 +10,8 @@ import {
     setCookie,
     setSignedCookie,
     deleteCookie,
-  } from 'hono/cookie'
+} from 'hono/cookie'
+import { decode, jwt, verify } from 'hono/jwt'
 
 const app = new Hono()
 const client = new Client({
@@ -64,7 +65,6 @@ app.post('/signup', async (c) => {
     else {
         await db.insert(user).values(
             {
-                id: id_count[0].count + 1,
                 username: username,
                 email: email,
                 password: password
@@ -83,13 +83,12 @@ app.post('/login', async (c) => {
     const check = await db.select().from(user).where(eq(user.email, email))
     const username = check[0].username;
     const EmailCookie = await setCookie(c, "Username", username);
-    const PasswordCookies = await setCookie(c, "Password", password)
 
     const Cookies = getCookie(c)
     console.log({
         all_Cookie: Cookies
     })
-    
+
     if (check.length == 0) {
         return c.json({ message: "User not found!" }, 401)
     }
@@ -101,12 +100,11 @@ app.post('/login', async (c) => {
 
 })
 
-app.post('/logout', async (c)=>{
+app.post('/logout', async (c) => {
     // deleteCookie(c, 'Username', 'Password')
     deleteCookie(c, "Username")
-    deleteCookie(c, "Password")
     console.log(getCookie(c))
-    return c.json({message: "logout success!"},200)
+    return c.json({ message: "logout success!" }, 200)
 })
 
 
