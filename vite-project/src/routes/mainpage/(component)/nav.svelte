@@ -24,7 +24,7 @@
     });
 </script>
 
-<div class="flex fixed top-0 w-full bg-[#222] h-[100px] shadow-md z-10">
+<div class="flex fixed top-0 w-full bg-[#262626] h-[100px] shadow-md z-10">
     <div class=" flex w-full justify-between items-center m-12">
         <Bolt size="54px" color="white" />
         <div class="flex-col">
